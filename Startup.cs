@@ -28,12 +28,15 @@ namespace aspnetcore_api_cqrs
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            // Version 1
             services.AddTransient<ICommandHandler<SaveTodoCommand>, SaveTodoCommandHandler>();
             services.AddTransient<IQueryHandler<GetTodoListForUser, IEnumerable<string>>, GetTodoListForUserHandler>();
 
-            //IServiceProvider serviceProvider = services.BuildServiceProvider();
-
+            // Version 2
             services.AddTransient<IProcessor>(serviceProvider => new Processor(serviceProvider));
+
+            // Version 3
+            services.AddTransient<IHandlerFactory>(serviceProvider => new HandlerFactory(serviceProvider));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
